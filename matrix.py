@@ -3,7 +3,7 @@ from typing import List
 
 
 class Vector():
-    def __init__(self, vals=List[int|float]):
+    def __init__(self, vals: List[int | float]):
 
         self.vals = vals
         self.shape = (len(vals), )
@@ -56,8 +56,19 @@ class Vector():
         if isinstance(other, (float, int)):
             new_vals = [v * other for v in self.vals]
             return Vector(new_vals)
-        
+
         raise NotImplementedError(f"This type is not supported for mul operation: {type(other)}")
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
+    def __rsub__(self, other):
+        if isinstance(other, (float, int)):
+            return Vector([other - v for v in self.vals])
+        return NotImplemented
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
 
 
 class Matrix():
@@ -92,3 +103,47 @@ class Matrix():
     
     def flatten(self) -> 'Vector':
         return Vector([self.vals[i][j] for i in range(self.shape[0]) for j in range(self.shape[1])])
+
+    def __str__(self):
+        rows = [", ".join(map(str, row)) for row in self.vals]
+        return "Matrix([" + "], [".join(rows) + "])"
+
+    def __repr__(self):
+        return self.__str__()
+
+    @staticmethod
+    def check_shapes(m1, m2):
+        if m1.shape != m2.shape:
+            raise ValueError("Matrices should be of the same shape")
+
+    def __add__(self, other):
+        if isinstance(other, Matrix):
+            self.check_shapes(self, other)
+            new_vals = [[self.vals[i][j] + other.vals[i][j] for j in range(self.shape[1])] for i in range(self.shape[0])]
+            return Matrix(new_vals)
+        raise NotImplementedError(f"This type is not supported for add operation: {type(other)}")
+
+    def __sub__(self, other):
+        if isinstance(other, Matrix):
+            self.check_shapes(self, other)
+            new_vals = [[self.vals[i][j] - other.vals[i][j] for j in range(self.shape[1])] for i in range(self.shape[0])]
+            return Matrix(new_vals)
+        raise NotImplementedError(f"This type is not supported for sub operation: {type(other)}")
+
+    def __mul__(self, other):
+        if isinstance(other, (float, int)):
+            new_vals = [[self.vals[i][j] * other for j in range(self.shape[1])] for i in range(self.shape[0])]
+            return Matrix(new_vals)
+        raise NotImplementedError(f"This type is not supported for mul operation: {type(other)}")
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
+    def __rsub__(self, other):
+        if isinstance(other, (float, int)):
+            new_vals = [[other - self.vals[i][j] for j in range(self.shape[1])] for i in range(self.shape[0])]
+            return Matrix(new_vals)
+        return NotImplemented
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
