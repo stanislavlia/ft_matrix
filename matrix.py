@@ -17,6 +17,9 @@ class Vector():
     def check_shapes(vec1, vec2):
         if vec1.shape != vec2.shape:
             raise ValueError("Vectors should be of the same shape")
+        
+    def is_zero_vector(self):
+        return all([v == 0 for v in self.vals])
 
     #========ITERATIONS==========
     def __getitem__(self, index):
