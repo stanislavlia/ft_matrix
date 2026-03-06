@@ -114,8 +114,8 @@ class Matrix():
         return Vector([self.vals[i][col_idx] for i in range(self.shape[0])])
 
     def __str__(self):
-        rows = [", ".join(map(str, row)) for row in self.vals]
-        return "Matrix([" + "], [".join(rows) + "])"
+        rows = ["[" + ", ".join(map(str, row)) + "]" for row in self.vals]
+        return "Matrix(\n  " + "\n  ".join(rows) + "\n)"
 
     def __repr__(self):
         return self.__str__()
