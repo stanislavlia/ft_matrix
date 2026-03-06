@@ -106,6 +106,12 @@ class Matrix():
     
     def flatten(self) -> 'Vector':
         return Vector([self.vals[i][j] for i in range(self.shape[0]) for j in range(self.shape[1])])
+    
+    def get_row(self, row_idx) -> 'Vector':
+        return Vector([self.vals[row_idx][j] for j in range(self.shape[1])])
+
+    def get_column(self, col_idx) -> 'Vector':
+        return Vector([self.vals[i][col_idx] for i in range(self.shape[0])])
 
     def __str__(self):
         rows = [", ".join(map(str, row)) for row in self.vals]
@@ -150,3 +156,4 @@ class Matrix():
 
     def __rmul__(self, other):
         return self.__mul__(other)
+    
