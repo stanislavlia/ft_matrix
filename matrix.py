@@ -20,6 +20,29 @@ class Vector():
         
     def is_zero_vector(self):
         return all([v == 0 for v in self.vals])
+    
+
+    def argmax(self):
+        
+        max_val_idx = 0
+        max_val = float("-inf")
+
+        for i, v in enumerate(self.vals):
+            if v > max_val:
+                max_val = v
+                max_val_idx = i            
+        return  max_val_idx
+    
+    def argmin(self):
+        
+        min_val_idx = 0
+        min_val = float("inf")
+
+        for i, v in enumerate(self.vals):
+            if v < min_val:
+                min_val = v
+                min_val_idx = i            
+        return  min_val_idx
 
     #========ITERATIONS==========
     def __getitem__(self, index):
@@ -113,6 +136,14 @@ class Matrix():
     def get_column(self, col_idx) -> 'Vector':
         return Vector([self.vals[i][col_idx] for i in range(self.shape[0])])
 
+    def swap_rows(self, r1: int, r2: int):
+        self.vals[r1], self.vals[r2] = self.vals[r2], self.vals[r1]
+
+    def set_row(self, vals, idx: int):
+        if isinstance(vals, Vector):
+            vals = vals.vals
+        self.vals[idx] = list(vals)
+
     def __str__(self):
         rows = ["[" + ", ".join(map(str, row)) + "]" for row in self.vals]
         return "Matrix(\n  " + "\n  ".join(rows) + "\n)"
@@ -157,3 +188,4 @@ class Matrix():
     def __rmul__(self, other):
         return self.__mul__(other)
     
+
